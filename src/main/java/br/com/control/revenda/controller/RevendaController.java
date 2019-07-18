@@ -3,7 +3,6 @@ package br.com.control.revenda.controller;
 import br.com.control.revenda.entity.Revenda;
 import br.com.control.revenda.entity.dtos.RevendaDTO;
 import br.com.control.revenda.service.RevendaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +16,11 @@ import java.util.List;
 @RequestMapping("revenda")
 public class RevendaController {
 
-    @Autowired
-    RevendaService revendaService;
+    private final RevendaService revendaService;
+
+    public RevendaController(RevendaService revendaService) {
+        this.revendaService = revendaService;
+    }
 
     @GetMapping("pageable")
     public ResponseEntity<?> all(Pageable pageable) {
