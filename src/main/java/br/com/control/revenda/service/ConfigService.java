@@ -10,13 +10,33 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ConfigService implements CrudBaisc<Config, String>{
+public class ConfigService implements CrudBaisc<Config, String> {
 
     @Autowired
     ConfigRepository configRepository;
 
+    @Autowired
+    ApiService apiService;
+
+    @Autowired
+    WebService webService;
+
+    @Autowired
+    FilaService filaService;
+
+    @Autowired
+    RevendaService revendaService;
+
+    @Autowired
+    DatabaseService databaseService;
+
     @Override
     public Config save(Config obj) {
+        obj.setDatabase(databaseService.save(obj.getDatabase()));
+        obj.setApi(apiService.save(obj.getApi()));
+        obj.setWeb(webService.save(obj.getWeb()));
+        obj.setFila(filaService.save(obj.getFila()));
+        obj.setRevenda(revendaService.save(obj.getRevenda()));
         return configRepository.save(obj);
     }
 
@@ -32,7 +52,7 @@ public class ConfigService implements CrudBaisc<Config, String>{
 
     @Override
     public Config get(String id) {
-        return null;
+        return configRepository.findById(id).get();
     }
 
     @Override

@@ -1,0 +1,72 @@
+version: "3.7"
+
+services:
+
+  portal-web:
+    image: linkedby/portal-web-local:v1.00.01
+    restart: always
+    ports:
+      - 81:80
+    networks:
+      - portal
+    depends_on:
+      - portal-api
+
+  portal-api:
+    image: linkedby/portal-api-local:v1.00.01
+    restart: always
+    ports:
+      - 9000:8080
+    depends_on:
+      - db
+      - fila
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/portal_online_2016?reWriteBatchedInserts=true
+      DATABASE_USER: postgres
+      DATABSE_PASSWORD: control
+      ACTIVEMQ: tcp://fila:61617
+      PORT: 9000
+      ARTIFACT: teste
+    networks:
+      - portal
+
+  db:
+    image: postgres:9.6-alpine
+    restart: always
+    container_name: "postgres-docker"
+    environment:
+      POSTGRES_DB: portal_online_2016
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: control
+    ports:
+      -  5434:5432
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    networks:
+      - portal
+
+  fila:
+    image: webcenter/activemq
+    restart: always
+    ports:
+      - 8162:8162
+      - 61617:61617
+    environment:
+      - ACTIVEMQ_MIN_MEMORY=512
+      - ACTIVEMQ_MAX_MEMORY=2048
+      - ACTIVEMQ_ENABLED_AUTH=false
+      - ACTIVEMQ_ADMIN_LOGIN=admin
+      - ACTIVEMQ_ADMIN_PASSWORD=admin
+    volumes:
+      - activemq_db:/var/log/activemq
+    networks:
+      - portal
+
+volumes:
+  activemq_db:
+    driver: local
+  database_data:
+    driver: local
+
+networks:
+  portal:

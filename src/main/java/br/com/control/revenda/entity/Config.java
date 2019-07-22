@@ -28,19 +28,25 @@ public class Config {
     private Fila fila;
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "api_id", referencedColumnName = "id")
+    @JoinColumn(name = "portal_api_id", referencedColumnName = "id")
     private Api api;
+    @NotNull
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "portal_web_id", referencedColumnName = "id")
+    private Web web;
+
 
 
     public Config() {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Config(Revenda revenda, Database database, Fila fila, Api api) {
+    public Config(Revenda revenda, Database database, Fila fila, Api api, Web web) {
         this.id = UUID.randomUUID().toString();
         this.revenda = revenda;
         this.database = database;
         this.fila = fila;
         this.api = api;
+        this.web = web;
     }
 }

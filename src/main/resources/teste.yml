@@ -1,0 +1,12 @@
+---
+version: "3.7"
+services:
+  portal-web:
+    image: "linkedby/portal-web"
+    restart: "always"
+    ports:
+    - "1:80"
+    networks:
+    - "portal"
+    depends_on:
+    - "portal-api"
