@@ -27,6 +27,10 @@ public class Database {
     @NotNull
     @Column(columnDefinition = "varchar(50)", length = 50)
     private String password;
+    @NotEmpty
+    @NotNull
+    @Column(columnDefinition = "varchar(50)", length = 50)
+    private String tablenName;
     @NotNull
     private int port;
 
@@ -35,11 +39,12 @@ public class Database {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Database(String url,String username, String password, int port) {
+    public Database(String url, @NotEmpty @NotNull String username, @NotEmpty @NotNull String password, @NotEmpty @NotNull String tablenName, @NotNull int port) {
         this.id = UUID.randomUUID().toString();
         this.url = url;
         this.username = username;
         this.password = password;
+        this.tablenName = tablenName;
         this.port = port;
     }
 }

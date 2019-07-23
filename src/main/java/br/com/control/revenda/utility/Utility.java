@@ -1,9 +1,7 @@
 package br.com.control.revenda.utility;
 
 import br.com.control.revenda.entity.Config;
-import br.com.control.revenda.entity.ConfigYml;
-import br.com.control.revenda.entity.PortalWeb;
-import br.com.control.revenda.entity.Service;
+import br.com.control.revenda.entity.yml.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.springframework.util.ResourceUtils;
@@ -11,6 +9,7 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.HashMap;
 
 public class Utility {
 
@@ -22,10 +21,51 @@ public class Utility {
         File output = new File("src/main/resources/teste.yml");
 
         setValuePortalWeb(config, configYml.getService().getPortalWeb());
-        mapper.writeValue(output, configYml);
+        setValuePortalApi(config, configYml.getService().getPortalApi());
+        setValueFila(config, configYml.getService().getFila());
+        setValueDatabase(config, configYml.getService().getDb());
+        mapper.writerWithDefaultPrettyPrinter().writeValue(output, configYml);
         return new FileInputStream(output);
 
     }
+
+    private static void setValueFila(Config config, ActiveMq fila) {
+        String[] environment = new String[]{
+                "ACTIVEMQ_MIN_MEMORY=512",
+                "ACTIVEMQ_MAX_MEMORY=2048",
+                "ACTIVEMQ_ENABLED_AUTH=false",
+                String.format("ACTIVEMQ_ADMIN_LOGIN=%s", config.getFila().getUsername()),
+                String.format("ACTIVEMQ_ADMIN_PASSWORD=%s", config.getFila().getPassword()),
+        };
+        fila.setPorts(new String[]{
+                String.format("%s:8161", config.getFila().getPortPainel()),
+                String.format("%s:61616", config.getFila().getPortTcp())
+        });
+        fila.setEnvironment(environment);
+    }
+
+    private static void setValueDatabase(Config config, Db db) {
+            HashMap<String, String> environment = new HashMap<>();
+            environment.put("POSTGRES_DB", config.getDatabase().getTablenName());
+            environment.put("POSTGRES_USER", config.getDatabase().getUsername());
+            environment.put("POSTGRES_PASSWORD", config.getDatabase().getPassword());
+            db.setEnvironment(environment);
+            db.setPorts(new String[]{String.format("%s:5432", config.getDatabase().getPort())});
+    }
+
+    private static void setValuePortalApi(Config config, PortalApi portalApi) {
+        HashMap<String, String> environment = new HashMap<>();
+        environment.put("DATABASE_URL", String.format("jdbc:postgresql://db:%s/%s?reWriteBatchedInserts=true",
+                config.getDatabase().getPort(),
+                config.getDatabase().getTablenName()));
+        environment.put("DATABASE_USER", config.getDatabase().getUsername());
+        environment.put("DATABSE_PASSWORD", config.getDatabase().getPassword());
+        environment.put("ACTIVEMQ", String.format("tcp://fila:%s", config.getFila().getPortTcp()));
+        environment.put("PORT", String.valueOf(config.getApi().getPort()));
+        portalApi.setEnvironment(environment);
+        portalApi.setPorts(new String[]{String.format("%s:8080", config.getApi().getPort())});
+    }
+
 
     private static void setValuePortalWeb(Config config, PortalWeb portalWeb) {
         portalWeb.setImage("linkedby/portal-web");

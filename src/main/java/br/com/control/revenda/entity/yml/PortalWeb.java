@@ -1,4 +1,4 @@
-package br.com.control.revenda.entity;
+package br.com.control.revenda.entity.yml;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

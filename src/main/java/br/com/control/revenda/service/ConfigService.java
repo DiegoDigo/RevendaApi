@@ -69,4 +69,9 @@ public class ConfigService implements CrudBaisc<Config, String> {
     public Boolean exist(String id) {
         return null;
     }
+
+
+    public Config findByRevendaId(String id){
+        return configRepository.findByRevenda_Id(id);
+    }
 }

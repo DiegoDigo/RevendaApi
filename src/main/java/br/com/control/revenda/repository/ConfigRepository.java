@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ConfigRepository extends JpaRepository<Config, String> {
+
+    Config findByRevenda_Id(String id);
 }

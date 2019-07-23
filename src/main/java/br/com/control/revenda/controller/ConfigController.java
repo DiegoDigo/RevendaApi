@@ -7,11 +7,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -46,16 +49,24 @@ public class ConfigController {
     @ApiOperation(value = "Retorna o arquivo baseado no id da configuração")
     @GetMapping("{id}")
     public ResponseEntity<?> download(HttpServletResponse response,
-                                      @PathVariable("id") String id) throws Exception{
-        Config config = configService.get(id);
-        if(config != null){
-            response.setContentType("application/yml");
-            response.setHeader("Content-Disposition", "attachment; filename=docker-compose.yml");
-            IOUtils.copy(Utility.readYaml(config), response.getOutputStream());
-            response.flushBuffer();
-            return ResponseEntity.ok().build();
-        }else{
-            return ResponseEntity.notFound().build();
+                                      @PathVariable("id") String revendaId){
+        try{
+            Config config = configService.findByRevendaId(revendaId);
+            if(config != null){
+                response.setContentType("application/yml");
+                response.setHeader("Content-Disposition", "attachment; filename=docker-compose.yml");
+                response.setHeader("filename", "docker-compose.yml");
+                IOUtils.copy(Utility.readYaml(config), response.getOutputStream());
+                response.flushBuffer();
+                return ResponseEntity.ok().build();
+            }else{
+                return ResponseEntity.notFound().build();
+            }
+        }catch (Exception e){
+            if(e instanceof NoSuchElementException){
+                return  ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+            return  ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
     }

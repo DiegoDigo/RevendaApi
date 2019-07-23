@@ -33,7 +33,6 @@ services:
   db:
     image: postgres:9.6-alpine
     restart: always
-    container_name: "postgres-docker"
     environment:
       POSTGRES_DB: portal_online_2016
       POSTGRES_USER: postgres
@@ -70,3 +69,4 @@ volumes:
 
 networks:
   portal:
+    driver: bridge
