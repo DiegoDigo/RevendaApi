@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,7 +53,25 @@ public class RevendaController {
         return ResponseEntity.ok(revendaService.save(
                 new Revenda(revendaDTO.getLicense(), revendaDTO.getName())
         ));
+    }
 
+    @ApiOperation(value = "Retorna um revenda por id.")
+    @GetMapping("{id}")
+    public ResponseEntity<?> get(@PathVariable("id") String id) {
+        Revenda revenda = revendaService.get(id);
+        if(revenda == null){
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(revenda);
+    }
 
+    @ApiOperation(value = "Retorna um revenda por licença.")
+    @GetMapping("license/{licenca}")
+    public ResponseEntity<?> get(@PathVariable("licenca") int licenca) {
+        Revenda revenda = revendaService.getRevenda(licenca);
+        if(revenda == null){
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(revenda);
     }
 }

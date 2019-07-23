@@ -55,4 +55,8 @@ public class RevendaService implements CrudBaisc<Revenda, String> {
     public Boolean exist(String id) {
         return revendaRepository.existsById(id);
     }
+
+    public Revenda getRevenda(int license){
+        return revendaRepository.findByLicense(license);
+    }
 }
