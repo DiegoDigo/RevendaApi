@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+
+  api:
+    image: digodiego/api-revenda:v00.00.01
+    ports:
+      - 9000:9000
+    environment:
+      DATABASE_URL=
