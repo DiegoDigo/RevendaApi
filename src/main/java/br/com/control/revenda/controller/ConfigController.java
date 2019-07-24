@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -30,7 +29,7 @@ public class ConfigController {
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Config config) throws Exception {
         Optional<Config> save = Optional.of(configService.save(config));
-        if(save.isPresent()){
+        if (save.isPresent()) {
             return ResponseEntity.ok(save.get());
         }
         return ResponseEntity.badRequest().build();
@@ -40,38 +39,50 @@ public class ConfigController {
     @GetMapping
     public ResponseEntity<?> all() {
         List<Config> configs = configService.getAll();
-        if(configs.isEmpty()){
+        if (configs.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(configs);
     }
 
     @ApiOperation(value = "Retorna o arquivo baseado no id da configuração")
-    @GetMapping("{id}")
+    @GetMapping("download/{id}")
     public ResponseEntity<?> download(HttpServletResponse response,
-                                      @PathVariable("id") String revendaId){
-        try{
+                                      @PathVariable("id") String revendaId) {
+        try {
             Config config = configService.findByRevendaId(revendaId);
-            if(config != null){
+            if (config != null) {
                 response.setContentType("application/yml");
                 response.setHeader("Content-Disposition", "attachment; filename=docker-compose.yml");
                 response.setHeader("filename", "docker-compose.yml");
                 IOUtils.copy(Utility.readYaml(config), response.getOutputStream());
                 response.flushBuffer();
                 return ResponseEntity.ok().build();
-            }else{
+            } else {
                 return ResponseEntity.notFound().build();
             }
-        }catch (Exception e){
-            if(e instanceof NoSuchElementException){
-                return  ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (Exception e) {
+            if (e instanceof NoSuchElementException) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
-            return  ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
     }
 
+    @ApiOperation(value = "Retorna o arquivo baseado no id da configuração")
+    @GetMapping("{id}")
+    public ResponseEntity<?> download(@PathVariable("id") String revendaId) {
 
-
-
+        Config config = configService.findByRevendaId(revendaId);
+        if(config == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(config);
+    }
 }
+
+
+
+
+

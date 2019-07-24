@@ -16,7 +16,7 @@ public class Config {
     private String id;
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "revenda_id", referencedColumnName = "id")
+    @JoinColumn(name = "revenda_id", referencedColumnName = "id", unique = true)
     private Revenda revenda;
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
