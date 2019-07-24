@@ -13,7 +13,7 @@ spring:
           use_jdbc_metadata_defaults: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/revendas}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5433/revendas}
     username: ${DATABASE_USER:postgres}
     password: ${DATABASE_PASSWORD:control}
     driver-class-name: org.postgresql.Driver

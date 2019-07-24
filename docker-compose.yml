@@ -3,9 +3,10 @@ version: "3.7"
 services:
 
   api:
-    image: digodiego/api-revenda:v00.00.01
+    image: digodiego/api-revenda
     ports:
-      - 9000:9000
+      - 9000:8080
+    restart: always
     environment:
       DATABASE_URL: jdbc:postgresql://db:5432/revendas
       DATABASE_USER: postgres
@@ -16,14 +17,21 @@ services:
       - api-network
   db:
     image: postgres:10-alpine
+    restart: always
     ports:
-      - 5433:5432
+      - 5439:5432
     environment:
       POSTGRES_DB: revendas
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: controlRevendas
+    volumes:
+      - database_data:/var/lib/postgresql/data
     networks:
       - api-network
+
+volumes:
+  database_data:
+    driver: local
 
 networks:
   api-network:

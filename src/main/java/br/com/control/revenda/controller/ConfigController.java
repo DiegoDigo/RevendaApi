@@ -38,7 +38,7 @@ public class ConfigController {
 
     @ApiOperation(value = "Retorna as configurações de uma revenda.")
     @GetMapping
-    public ResponseEntity<?> all(HttpServletResponse response) {
+    public ResponseEntity<?> all() {
         List<Config> configs = configService.getAll();
         if(configs.isEmpty()){
             return ResponseEntity.noContent().build();
