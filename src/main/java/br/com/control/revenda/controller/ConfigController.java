@@ -45,6 +45,16 @@ public class ConfigController {
         return ResponseEntity.ok(configs);
     }
 
+    @ApiOperation(value = "Atualiza configuraçao")
+    @PutMapping("atualizar")
+    public ResponseEntity<?> put(@RequestBody Config config) {
+        Config configs = configService.get(config.getId());
+        if (configs == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(configService.save(config));
+    }
+
     @ApiOperation(value = "Retorna o arquivo baseado no id da configuração")
     @GetMapping("download/{id}")
     public ResponseEntity<?> download(HttpServletResponse response,

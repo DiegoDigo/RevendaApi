@@ -1,6 +1,7 @@
 package services;
 
 import br.com.control.revenda.entity.Revenda;
+import br.com.control.revenda.entity.enums.EnvironmentEnum;
 import br.com.control.revenda.repository.RevendaRepository;
 import br.com.control.revenda.service.RevendaService;
 import org.junit.Before;
@@ -44,12 +45,12 @@ public class RevendaServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         revendas = Arrays.asList(
-                new Revenda(1, "teste 1"),
-                new Revenda(2, "teste 2"),
-                new Revenda(3, "teste 3")
+                new Revenda(1456, "teste 1", EnvironmentEnum.DEVELOP, "00000000"),
+                new Revenda(1457, "teste 2", EnvironmentEnum.DEVELOP, "00000000"),
+                new Revenda(1458, "teste 3", EnvironmentEnum.DEVELOP, "00000000")
         );
 
-        revenda = new Revenda(4, "teste 4");
+        revenda = new Revenda(1459, "teste 4", EnvironmentEnum.DEVELOP, "00000000");
 
         revendasPageable = new PageImpl<>(revendas);
 

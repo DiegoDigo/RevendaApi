@@ -15,7 +15,6 @@ import java.util.UUID;
 public class Api {
 
     @Id
-    @JsonIgnore
     private String id;
     @NotNull
     private int port;

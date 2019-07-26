@@ -3,6 +3,7 @@ package controller;
 import br.com.control.revenda.controller.RevendaController;
 import br.com.control.revenda.entity.Revenda;
 import br.com.control.revenda.entity.dtos.RevendaDTO;
+import br.com.control.revenda.entity.enums.EnvironmentEnum;
 import br.com.control.revenda.service.RevendaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -43,8 +44,8 @@ public class RevendaControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        revendaDTO = new RevendaDTO(145, "teste 1");
-        revenda = new Revenda(1456, "teste 2");
+        revendaDTO = new RevendaDTO(145, "teste 1", EnvironmentEnum.DEVELOP, "00000000");
+        revenda = new Revenda(1456, "teste 2", EnvironmentEnum.DEVELOP, "00000000");
 
     }
 

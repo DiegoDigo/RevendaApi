@@ -51,7 +51,7 @@ public class RevendaController {
     @PostMapping("register")
     public ResponseEntity<?> create(@Valid @RequestBody RevendaDTO revendaDTO) {
         return ResponseEntity.ok(revendaService.save(
-                new Revenda(revendaDTO.getLicense(), revendaDTO.getName())
+                new Revenda(revendaDTO.getLicense(), revendaDTO.getName(), revendaDTO.getEnvironment(), revendaDTO.getCnpj())
         ));
     }
 

@@ -11,7 +11,7 @@ services:
     environment:
       POSTGRES_USER: "admin"
       POSTGRES_PASSWORD: "admin"
-      POSTGRES_DB: "admin-9999"
+      POSTGRES_DB: "admin"
     networks:
     - "portal"
   fila:
@@ -46,7 +46,7 @@ services:
     - "9000:8080"
     environment:
       DATABSE_PASSWORD: "admin"
-      DATABASE_URL: "jdbc:postgresql://db:5432/admin-9999?reWriteBatchedInserts=true"
+      DATABASE_URL: "jdbc:postgresql://db:5432/admin?reWriteBatchedInserts=true"
       PORT: "9000"
       ACTIVEMQ: "tcp://fila:61616"
       DATABASE_USER: "admin"

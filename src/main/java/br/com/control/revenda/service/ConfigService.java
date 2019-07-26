@@ -1,12 +1,14 @@
 package br.com.control.revenda.service;
 
 import br.com.control.revenda.entity.Config;
+import br.com.control.revenda.entity.Revenda;
 import br.com.control.revenda.repository.ConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Service
@@ -36,7 +38,9 @@ public class ConfigService implements CrudBaisc<Config, String> {
         obj.setApi(apiService.save(obj.getApi()));
         obj.setWeb(webService.save(obj.getWeb()));
         obj.setFila(filaService.save(obj.getFila()));
-        obj.setRevenda(revendaService.save(obj.getRevenda()));
+        Revenda revenda = obj.getRevenda();
+        revenda.setConfigured(true);
+        obj.setRevenda(revendaService.save(revenda));
         return configRepository.save(obj);
     }
 
