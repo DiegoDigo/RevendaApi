@@ -2,6 +2,15 @@ version: "3.7"
 
 services:
 
+  web:
+    image: digodiego/web-revenda
+    ports:
+      - 80:80
+    restart: always
+    depends_on:
+      - api
+    networks:
+      - api-network
   api:
     image: digodiego/api-revenda
     ports:

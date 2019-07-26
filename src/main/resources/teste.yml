@@ -9,9 +9,9 @@ services:
     volumes:
     - "database_data:/var/lib/postgresql/data"
     environment:
-      POSTGRES_USER: "admin"
-      POSTGRES_PASSWORD: "admin"
-      POSTGRES_DB: "admin"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "control"
+      POSTGRES_DB: "portal-2016"
     networks:
     - "portal"
   fila:
@@ -45,11 +45,11 @@ services:
     ports:
     - "9000:8080"
     environment:
-      DATABSE_PASSWORD: "admin"
-      DATABASE_URL: "jdbc:postgresql://db:5432/admin?reWriteBatchedInserts=true"
+      DATABSE_PASSWORD: "control"
+      DATABASE_URL: "jdbc:postgresql://db:5432/portal-2016?reWriteBatchedInserts=true"
       PORT: "9000"
       ACTIVEMQ: "tcp://fila:61616"
-      DATABASE_USER: "admin"
+      DATABASE_USER: "postgres"
     networks:
     - "portal"
     depends_on:

@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   portal-web:
-    image: linkedby/portal-web-local:v1.00.01
+    image: linkedby/portal-web
     restart: always
     ports:
       - 81:80
@@ -13,7 +13,7 @@ services:
       - portal-api
 
   portal-api:
-    image: linkedby/portal-api-local:v1.00.01
+    image: linkedby/portal-api
     restart: always
     ports:
       - 9000:8080
