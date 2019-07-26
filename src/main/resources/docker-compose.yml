@@ -26,7 +26,8 @@ services:
       DATABSE_PASSWORD: control
       ACTIVEMQ: tcp://fila:61617
       PORT: 9000
-      ARTIFACT: teste
+      MATRICULA: teste
+      HOSTFRONT: http://localhost:3000/#
     networks:
       - portal
 

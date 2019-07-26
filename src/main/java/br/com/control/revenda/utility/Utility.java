@@ -45,12 +45,12 @@ public class Utility {
     }
 
     private static void setValueDatabase(Config config, Db db) {
-            HashMap<String, String> environment = new HashMap<>();
-            environment.put("POSTGRES_DB", config.getDatabase().getTablenName());
-            environment.put("POSTGRES_USER", config.getDatabase().getUsername());
-            environment.put("POSTGRES_PASSWORD", config.getDatabase().getPassword());
-            db.setEnvironment(environment);
-            db.setPorts(new String[]{String.format("%s:5432", config.getDatabase().getPort())});
+        HashMap<String, String> environment = new HashMap<>();
+        environment.put("POSTGRES_DB", config.getDatabase().getTablenName());
+        environment.put("POSTGRES_USER", config.getDatabase().getUsername());
+        environment.put("POSTGRES_PASSWORD", config.getDatabase().getPassword());
+        db.setEnvironment(environment);
+        db.setPorts(new String[]{String.format("%s:5432", config.getDatabase().getPort())});
     }
 
     private static void setValuePortalApi(Config config, PortalApi portalApi) {
@@ -62,13 +62,15 @@ public class Utility {
         environment.put("DATABSE_PASSWORD", config.getDatabase().getPassword());
         environment.put("ACTIVEMQ", String.format("tcp://fila:%s", config.getFila().getPortTcp()));
         environment.put("PORT", String.valueOf(config.getApi().getPort()));
+        environment.put("MATRICULA", String.valueOf(config.getRevenda().getLicense()));
+        environment.put("HOSTFRONT", config.getWeb().getHost() + "/#");
         portalApi.setEnvironment(environment);
         portalApi.setPorts(new String[]{String.format("%s:8080", config.getApi().getPort())});
     }
 
 
     private static void setValuePortalWeb(Config config, PortalWeb portalWeb) {
-        portalWeb.setImage("linkedby/portal-web");
+        portalWeb.setImage(String.format("linkedby/portal-web-%s", config.getRevenda().getLicense()));
         portalWeb.setPorts(new String[]{String.format("%s:80", config.getWeb().getPort())});
     }
 
