@@ -9,9 +9,9 @@ services:
     volumes:
     - "database_data:/var/lib/postgresql/data"
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "control"
-      POSTGRES_DB: "portal-2016"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_DB: "9999"
     networks:
     - "portal"
   fila:
@@ -31,7 +31,7 @@ services:
     networks:
     - "portal"
   portal-web:
-    image: "linkedby/portal-web"
+    image: "linkedby/portal-web-2016"
     restart: "always"
     ports:
     - "80:80"
@@ -40,16 +40,18 @@ services:
     depends_on:
     - "portal-api"
   portal-api:
-    image: "linkedby/portal-api-local:v1.00.01"
+    image: "linkedby/portal-api"
     restart: "always"
     ports:
     - "9000:8080"
     environment:
-      DATABSE_PASSWORD: "control"
-      DATABASE_URL: "jdbc:postgresql://db:5432/portal-2016?reWriteBatchedInserts=true"
+      MATRICULA: "2016"
+      DATABSE_PASSWORD: "admin"
+      DATABASE_URL: "jdbc:postgresql://db:5432/9999?reWriteBatchedInserts=true"
       PORT: "9000"
+      HOSTFRONT: "linkedby.teste.com.br/#"
       ACTIVEMQ: "tcp://fila:61616"
-      DATABASE_USER: "postgres"
+      DATABASE_USER: "admin"
     networks:
     - "portal"
     depends_on:

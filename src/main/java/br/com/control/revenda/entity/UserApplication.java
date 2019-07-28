@@ -10,8 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
-@Entity(name = "user")
-public class User {
+@Entity
+public class UserApplication {
 
     @Id
     private String id;
@@ -21,15 +21,15 @@ public class User {
     private String username;
     @NotNull
     @NotEmpty
-    @Column(columnDefinition = "varchar(50)", length = 50)
+    @Column(columnDefinition = "varchar(60)", length = 60)
     private String password;
 
-    public User() {
+    public UserApplication() {
         this.id = UUID.randomUUID().toString();
     }
 
 
-    public User(String username, String password) {
+    public UserApplication(String username, String password) {
         this.id = UUID.randomUUID().toString();
         this.username = username;
         this.password = password;
