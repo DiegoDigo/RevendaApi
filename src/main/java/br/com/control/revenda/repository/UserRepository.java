@@ -1,12 +1,14 @@
 package br.com.control.revenda.repository;
 
-import br.com.control.revenda.entity.UserApplication;
+import br.com.control.revenda.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface UserRepository extends JpaRepository<UserApplication, String> {
+import java.util.Optional;
 
-    UserApplication findByUsername(String username);
+@Repository
+public interface UserRepository extends JpaRepository<User, String> {
+
+    Optional<User> findByUsername(String username);
 
 }
