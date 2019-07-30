@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenUtil implements Serializable {
@@ -25,14 +26,14 @@ public class JwtTokenUtil implements Serializable {
 
     public String createToken(String username, List<Role> roles) {
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put("roles", roles);
+        claims.put("roles", roles.stream().map(Role::getName).collect(Collectors.toList()));
         Date now = new Date();
         Date validity = new Date(now.getTime() + SecurityConstants.EXPIRATION_TIME);
-        return Jwts.builder()//
-                .setClaims(claims)//
-                .setIssuedAt(now)//
-                .setExpiration(validity)//
-                .signWith(SignatureAlgorithm.HS256, SecurityConstants.KEY)//
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, SecurityConstants.KEY)
                 .compact();
     }
 
