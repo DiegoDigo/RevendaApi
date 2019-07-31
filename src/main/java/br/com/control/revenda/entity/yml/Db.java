@@ -1,5 +1,6 @@
 package br.com.control.revenda.entity.yml;
 
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import lombok.Data;
 
 import java.util.Map;

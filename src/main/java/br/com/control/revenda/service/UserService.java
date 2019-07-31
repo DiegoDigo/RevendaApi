@@ -1,12 +1,13 @@
 package br.com.control.revenda.service;
 
-import br.com.control.revenda.entity.UserApplication;
+import br.com.control.revenda.entity.User;
 import br.com.control.revenda.repository.UserRepository;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 
@@ -19,20 +20,20 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    public UserApplication findByUserName(String username) {
+    public Optional<User> findByUserName(String username) {
         return this.userRepository.findByUsername(username);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserApplication applicationUserApplication = this.userRepository.findByUsername(username);
-        if (applicationUserApplication == null) {
+        Optional<User> applicationUser = this.userRepository.findByUsername(username);
+        if (!applicationUser.isPresent()) {
             throw new UsernameNotFoundException(username);
         }
-        return new User(applicationUserApplication.getUsername(), applicationUserApplication.getPassword(), emptyList());
+        return new org.springframework.security.core.userdetails.User(applicationUser.get().getUsername(), applicationUser.get().getPassword(), emptyList());
     }
 
-    public UserApplication save(UserApplication user) {
+    public User save(User user) {
         return userRepository.save(user);
     }
 }

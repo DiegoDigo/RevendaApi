@@ -64,7 +64,7 @@ public class ConfigController {
             if (config != null) {
                 response.setContentType("application/yml");
                 response.setHeader("Content-Disposition", "attachment; filename=docker-compose.yml");
-                response.setHeader("filename", "docker-compose.yml");
+                response.setHeader("filename", "temp/docker-compose.yml");
                 IOUtils.copy(Utility.readYaml(config), response.getOutputStream());
                 response.flushBuffer();
                 return ResponseEntity.ok().build();
@@ -75,7 +75,8 @@ public class ConfigController {
             if (e instanceof NoSuchElementException) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            System.out.println(e.getCause());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
     }

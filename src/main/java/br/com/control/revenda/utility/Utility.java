@@ -4,6 +4,8 @@ import br.com.control.revenda.entity.Config;
 import br.com.control.revenda.entity.yml.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
@@ -15,10 +17,10 @@ public class Utility {
 
 
     public static InputStream readYaml(Config config) throws Exception {
-        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory()); // jackson databind
-        File file = ResourceUtils.getFile("classpath:docker-compose.yml");
+        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
+        File file = ResourceUtils.getFile("classpath:temp/docker-compose.yml");
         ConfigYml configYml = mapper.readValue(file, ConfigYml.class);
-        File output = new File("src/main/resources/teste.yml");
+        File output = new ClassPathResource("temp/formatted.yml").getFile();
 
         setValuePortalWeb(config, configYml.getService().getPortalWeb());
         setValuePortalApi(config, configYml.getService().getPortalApi());
@@ -55,12 +57,11 @@ public class Utility {
 
     private static void setValuePortalApi(Config config, PortalApi portalApi) {
         HashMap<String, String> environment = new HashMap<>();
-        environment.put("DATABASE_URL", String.format("jdbc:postgresql://db:%s/%s?reWriteBatchedInserts=true",
-                config.getDatabase().getPort(),
+        environment.put("DATABASE_URL", String.format("jdbc:postgresql://db:5432/%s?reWriteBatchedInserts=true",
                 config.getDatabase().getTablenName()));
         environment.put("DATABASE_USER", config.getDatabase().getUsername());
         environment.put("DATABSE_PASSWORD", config.getDatabase().getPassword());
-        environment.put("ACTIVEMQ", String.format("tcp://fila:%s", config.getFila().getPortTcp()));
+        environment.put("ACTIVEMQ", "tcp://fila:61616");
         environment.put("PORT", String.valueOf(config.getApi().getPort()));
         environment.put("MATRICULA", String.valueOf(config.getRevenda().getLicense()));
         environment.put("HOSTFRONT", config.getWeb().getHost() + "/#");
