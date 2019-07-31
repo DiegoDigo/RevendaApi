@@ -7,7 +7,6 @@ import java.util.Map;
 
 @Data
 public class Db {
-    @JsonRawValue
     private String image;
     private String restart;
     private String[] ports;
