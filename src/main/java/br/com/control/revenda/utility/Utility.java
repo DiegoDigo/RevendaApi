@@ -61,7 +61,7 @@ public class Utility {
                 config.getDatabase().getTablenName()));
         environment.put("DATABASE_USER", config.getDatabase().getUsername());
         environment.put("DATABSE_PASSWORD", config.getDatabase().getPassword());
-        environment.put("ACTIVEMQ", String.format("tcp://fila:%s", config.getFila().getPortTcp()));
+        environment.put("ACTIVEMQ", "tcp://fila:61616");
         environment.put("PORT", String.valueOf(config.getApi().getPort()));
         environment.put("MATRICULA", String.valueOf(config.getRevenda().getLicense()));
         environment.put("HOSTFRONT", config.getWeb().getHost() + "/#");

@@ -39,8 +39,8 @@ public class DataInitializer implements CommandLineRunner {
                     }
                 });
         Stream.of(
-                new User("admin", bCryptPasswordEncoder.encode("admin"), Collections.singletonList(roleService.findByName("ROLE_ADMIN"))),
-                new User("suporte", bCryptPasswordEncoder.encode("cuidado"), Collections.singletonList(roleService.findByName("ROLE_SUPORT")))
+                new User("admin", bCryptPasswordEncoder.encode("@c0ntr0lr3v3nd@"), Collections.singletonList(roleService.findByName("ROLE_ADMIN"))),
+                new User("suporte", bCryptPasswordEncoder.encode("@sup0rt3r3v3nd@"), Collections.singletonList(roleService.findByName("ROLE_SUPORT")))
         ).forEach(user -> {
             if (!userService.findByUserName(user.getUsername()).isPresent()) {
                 userService.save(user);
