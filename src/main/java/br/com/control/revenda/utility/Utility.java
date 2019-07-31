@@ -4,6 +4,7 @@ import br.com.control.revenda.entity.Config;
 import br.com.control.revenda.entity.yml.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 
@@ -16,7 +17,7 @@ public class Utility {
 
 
     public static InputStream readYaml(Config config) throws Exception {
-        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory()); // jackson databind
+        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
         File file = ResourceUtils.getFile("classpath:temp/docker-compose.yml");
         ConfigYml configYml = mapper.readValue(file, ConfigYml.class);
         File output = new ClassPathResource("temp/formatted.yml").getFile();
