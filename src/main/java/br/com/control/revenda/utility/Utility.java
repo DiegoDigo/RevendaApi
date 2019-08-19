@@ -1,6 +1,7 @@
 package br.com.control.revenda.utility;
 
 import br.com.control.revenda.entity.Config;
+import br.com.control.revenda.entity.enums.EnvironmentEnum;
 import br.com.control.revenda.entity.yml.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -65,13 +66,18 @@ public class Utility {
         environment.put("PORT", String.valueOf(config.getApi().getPort()));
         environment.put("MATRICULA", String.valueOf(config.getRevenda().getLicense()));
         environment.put("HOSTFRONT", config.getWeb().getHost() + "/#");
+        environment.put("AMBIENTE", EnvironmentEnum.valueOf(config.getRevenda().getEnvironment().toString()).enviroment.toLowerCase());
+        environment.put("LOGS", "/usr/local/tomcat/logs/");
+        environment.put("CATALINA_OPTS", "-Xmx2g -Xms2g -Xss2m -XX:MaxPermSize=1024m");
+        environment.put("JAVA_OPTS", "-Xms2g -Xmx2g -Xss2m -XX:PermSize=1024m -XX:MaxPermSize=1024m");
         portalApi.setEnvironment(environment);
+        portalApi.setImage(String.format("linkedby/portal-api-%s", EnvironmentEnum.valueOf(config.getRevenda().getEnvironment().toString()).enviroment.toLowerCase()));
         portalApi.setPorts(new String[]{String.format("%s:8080", config.getApi().getPort())});
     }
 
 
     private static void setValuePortalWeb(Config config, PortalWeb portalWeb) {
-        portalWeb.setImage(String.format("linkedby/portal-web-%s", config.getRevenda().getLicense()));
+        portalWeb.setImage(String.format("linkedby/portal-web-%s-%s", config.getRevenda().getLicense(), EnvironmentEnum.valueOf(config.getRevenda().getEnvironment().toString()).enviroment.toLowerCase()));
         portalWeb.setPorts(new String[]{String.format("%s:80", config.getWeb().getPort())});
     }
 
