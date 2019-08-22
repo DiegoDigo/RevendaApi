@@ -78,8 +78,8 @@ public class Utility {
 
     private static void setValuePortalWeb(Config config, PortalWeb portalWeb) {
         HashMap<String, String> environment = new HashMap<>();
-        environment.put("API",config.getWeb().getHostApi());
-        environment.put("HOST",String.format("http://%s/",config.getWeb().getHost()));
+        environment.put("API",String.format("http://%s/",config.getWeb().getHostApi()));
+        environment.put("HOST",config.getWeb().getHost());
         portalWeb.setEnvironment(environment);
         portalWeb.setImage(String.format("linkedby/portal-web-%s", EnvironmentEnum.valueOf(config.getRevenda().getEnvironment().toString()).enviroment.toLowerCase()));
         portalWeb.setPorts(new String[]{String.format("%s:80", config.getWeb().getPort())});

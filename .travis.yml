@@ -1,0 +1,20 @@
+sudo: required
+language: java
+jdk: oraclejdk8
+
+services:
+  - docker
+
+env:
+  global:
+    - COMMIT=${TRAVIS_COMMIT::7}
+
+script:
+  - ./mvnw clean install -B
+
+after_success:
+  - docker login -u digodiego -p @mesma1012
+  - export IMAGE_NAME=digodiego/api-revenda
+  - docker build -t $IMAGE_NAME:$COMMIT -t $IMAGE_NAME:latest .
+  - docker push $IMAGE_NAME:latest
+  - docker push $IMAGE_NAME:$COMMIT
