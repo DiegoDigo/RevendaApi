@@ -1,6 +1,6 @@
 sudo: required
 language: java
-jdk: oraclejdk8
+jdk: openjdk8
 
 services:
   - docker
@@ -9,8 +9,13 @@ env:
   global:
     - COMMIT=${TRAVIS_COMMIT::7}
 
+install: true
 script:
   - mvn clean install -B
+
+cache:
+  directories:
+    - $HOME/.m2
 
 after_success:
   - docker login -u digodiego -p @mesma1012
