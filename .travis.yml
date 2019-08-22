@@ -11,7 +11,7 @@ env:
 
 install: true
 script:
-  - mvn clean install -B
+  - mvn clean install -DskipTests=true -B
 
 cache:
   directories:
