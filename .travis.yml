@@ -10,7 +10,7 @@ env:
     - COMMIT=${TRAVIS_COMMIT::7}
 
 script:
-  - ./mvnw clean install -B
+  - mvn clean install -B
 
 after_success:
   - docker login -u digodiego -p @mesma1012
