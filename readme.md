@@ -1,0 +1,1 @@
+### Status [![Build Status](https://travis-ci.org/DiegoDigo/RevendaApi.svg?branch=master)]
